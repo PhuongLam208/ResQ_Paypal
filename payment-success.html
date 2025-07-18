@@ -22,14 +22,17 @@
   <h1>Confirm Payment...</h1>
   <div id="status">Please wait a second...</div>
 
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get("token");
+ <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get("token");
 
-    if (!orderId) {
-      document.getElementById("status").textContent = "Cannot find payment!";
-    } else {
-      // 2. Gửi POST đến API Spring Boot
+  if (!orderId) {
+    document.getElementById("status").textContent = "❌ Cannot find payment!";
+  } else {
+
+    // ⏳ Delay 30s
+    setTimeout(() => {
+      // Gửi POST đến API Spring Boot sau 30 giây
       fetch("http://192.168.1.100:9090/api/paypal/capture", {
         method: "POST",
         headers: {
@@ -39,12 +42,14 @@
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.status === "COMPLETED") {
+          console.log("Payment response:", data);
+          const status = data.status?.toUpperCase();
+          if (status === "COMPLETED" || status === "COMPLETE") {
             document.getElementById("status").textContent =
-              "Payment Success! Payment Id: " + data.captureId;
+              "✅ Payment Success! Payment Id: " + data.captureId;
           } else {
             document.getElementById("status").textContent =
-              "Payment Failed. Please try again.";
+              "❌ Payment Failed. Please try again.";
           }
         })
         .catch((err) => {
@@ -52,7 +57,9 @@
           document.getElementById("status").textContent =
             "❌ Có lỗi xảy ra khi xác nhận thanh toán.";
         });
-    }
-  </script>
+    }, 20000); // 30,000 milliseconds = 30 seconds
+  }
+</script>
+
 </body>
 </html>
