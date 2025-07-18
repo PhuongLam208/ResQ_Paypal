@@ -1,10 +1,10 @@
  <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Payment Result</title>
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Result</title>
+    <style>
     body {
       font-family: Arial, sans-serif;
       padding: 30px;
@@ -17,12 +17,12 @@
       font-weight: bold;
     }
   </style>
-</head>
-<body>
-  <h1>Confirm Payment...</h1>
-  <div id="status">Please wait a second...</div>
+  </head>
+  <body>
+    <h1>Confirm Payment...</h1>
+    <div id="status">Please wait a second...</div>
 
- <script>
+    <script>
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get("token");
 
@@ -33,13 +33,12 @@
     // ⏳ Delay 30s
     setTimeout(() => {
       // Gửi POST đến API Spring Boot sau 30 giây
-      fetch("http://192.168.1.100:9090/api/paypal/capture", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ orderId: orderId }),
-      })
+      fetch(`http://192.168.1.100:9090/api/paypal/capture/${orderId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
         .then((res) => res.json())
         .then((data) => {
           console.log("Payment response:", data);
@@ -61,5 +60,5 @@
   }
 </script>
 
-</body>
+  </body>
 </html>
