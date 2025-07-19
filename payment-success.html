@@ -45,7 +45,7 @@
           const status = data.status?.toUpperCase();
           if (status === "COMPLETED" || status === "COMPLETE") {
             document.getElementById("status").textContent =
-              "✅ Payment Success! Payment Id: " + data.captureId;
+              "✅ Payment Success! Payment Id: " + orderId;
           } else {
             document.getElementById("status").textContent =
               "❌ Payment Failed. Please try again.";
