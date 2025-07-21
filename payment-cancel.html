@@ -1,10 +1,74 @@
-<!DOCTYPE html> <html lang="vi"> <head> <meta charset="UTF-8" /> <meta
-            name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Cancel Payment</title>
-        <style>     body {       font-family: Arial, sans-serif;       padding: 30px;       background-color: #fff3f3;       text-align: center;     }     #status {       margin-top: 50px;       font-size: 1.4em;       font-weight: bold;       color: #d9534f;     }     .btn {       margin-top: 30px;       display: inline-block;       padding: 10px 20px;       font-size: 1em;       background-color: #007bff;       color: white;       border: none;       border-radius: 6px;       text-decoration: none;     }     .btn:hover {       background-color: #0056b3;     }   </style>
-    </head> 
-    <body> 
-        <h1>Payment is cancelled</h1>
-         <div id="status">You have canceled the payment process. No amount has been charged.</div>
-         </body>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cancel Payment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px 20px;
+      background-color: #eaeaea;
+      color: #b91c1c;
+      text-align: center;
+    }
+
+    .logo-stack {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 40px;
+    }
+
+    .logo-main {
+      width: 100px;
+      height: 100px;
+      display: block;
+      border-radius: 50%;
+      border: 3px solid #0000;
+    }
+
+    .logo-overlay {
+      position: absolute;
+      width: 90px;
+      height: auto;
+      bottom: -35%; /* Đè lên khoảng 15% */
+      right: -55%;  /* Có thể điều chỉnh nếu muốn lệch vào trong */
+      border-radius: 50%;
+      border: 3px solid #0000;
+      background-color: white;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon {
+      font-size: 60px;
+      color: #dc2626;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-top: 0;
+      color: #b91c1c;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: 500;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo chồng lên nhau -->
+  <div class="logo-stack">
+    <img class="logo-main" src="paypal.png" alt="Logo Chính">
+    <img class="logo-overlay" src="6.6.png" alt="Logo Phụ">
+  </div>
+
+  <h1>❌ Payment has been cancelled</h1>
+  <div id="status">You have cancelled the payment process. No amount has been charged.</div>
+
+</body>
 </html>

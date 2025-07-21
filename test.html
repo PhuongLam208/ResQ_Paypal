@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Result</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 30px;
+        background-color: #f2f2f2;
+        text-align: center;
+      }
+      #status {
+        margin-top: 50px;
+        font-size: 1.4em;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Confirm Payment...</h1>
+    <div id="status">Please wait a second...</div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get("token");
+
+      if (!orderId) {
+        document.getElementById("status").textContent = "❌ Cannot find payment!";
+      } else {
+        setTimeout(() => {
+          fetch(`https://1f8ca94f2403.ngrok-free.app/api/paypal/capture/${orderId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log("Payment response:", data);
+              const status = data.status?.toUpperCase();
+              if (status === "COMPLETED" || status === "COMPLETE") {
+                document.getElementById("status").textContent =
+                  "✅ Payment Success! Payment Id: " + orderId;
+                document.getElementById("title").style.display = "none"; // Ẩn tiêu đề
+              } else {
+                document.getElementById("status").textContent =
+                  "❌ Payment Failed. Please try again.";
+              }
+            })
+            .catch((err) => {
+              console.error("Lỗi:", err);
+              document.getElementById("status").textContent =
+                "❌ Có lỗi xảy ra khi xác nhận thanh toán.";
+            });
+        }, 30000);
+      }
+    </script>
+  </body>
+</html>

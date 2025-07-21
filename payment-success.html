@@ -1,64 +1,109 @@
- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment Result</title>
-    <style>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Success Payment</title>
+  <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px 20px;
+      background-color: #efefef;
       text-align: center;
     }
+
+    .logo-stack {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 40px;
+    }
+
+    .logo-main {
+      width: 100px;
+      height: 100px;
+      display: block;
+      border-radius: 50%;
+      border: 3px solid #0000;
+    }
+
+    .logo-overlay {
+      position: absolute;
+      width: 90px;
+      height: auto;
+      bottom: -35%; /* Đè lên khoảng 15% */
+      right: -55%;  /* Có thể điều chỉnh nếu muốn lệch vào trong */
+      border-radius: 50%;
+      border: 3px solid #0000;
+      background-color: white;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-top: 0;
+    }
+
     #status {
-      margin-top: 50px;
-      font-size: 1.4em;
-      font-weight: bold;
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: 500;
     }
   </style>
-  </head>
-  <body>
-    <h1>Confirm Payment...</h1>
-    <div id="status">Please wait a second...</div>
+</head>
+<body>
 
-    <script>
+  <!-- Logo chồng lên nhau -->
+  <div class="logo-stack">
+    <img class="logo-main" src="paypal.png" alt="Logo Chính">
+    <img class="logo-overlay" src="6.6.png" alt="Logo Phụ">
+  </div>
+
+  <h1 id="title">Confirm Payment...</h1>
+  <div id="status">Please wait a second</div>
+<script>
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get("token");
 
   if (!orderId) {
     document.getElementById("status").textContent = "❌ Cannot find payment!";
+    document.getElementById("status").style.color = "#b91c1c";
   } else {
-
-    // ⏳ Delay 30s
     setTimeout(() => {
-      // Gửi POST đến API Spring Boot sau 30 giây
       fetch(`https://1f8ca94f2403.ngrok-free.app/api/paypal/capture/${orderId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log("Payment response:", data);
           const status = data.status?.toUpperCase();
+          const titleElement = document.getElementById("title");
+
           if (status === "COMPLETED" || status === "COMPLETE") {
-            document.getElementById("status").textContent =
-              "✅ Payment Success! Payment Id: " + orderId;
+            titleElement.textContent = "✅ Payment has been successful";
+            titleElement.style.color = "#38761d"; // Màu xanh
+            document.getElementById("status").style.display = "none";
           } else {
-            document.getElementById("status").textContent =
-              "❌ Payment Failed. Please try again.";
+            titleElement.textContent = "❌ Payment Failed. Please try again.";
+            titleElement.style.color = "#b91c1c";
+            document.getElementById("status").style.display = "none";
           }
         })
         .catch((err) => {
           console.error("Lỗi:", err);
           document.getElementById("status").textContent =
             "❌ Có lỗi xảy ra khi xác nhận thanh toán.";
+          document.getElementById("title").style.color = "#b91c1c";
         });
-    }, 30000); // 30,000 milliseconds = 30 seconds
+    }, 30000);
   }
 </script>
-
-  </body>
+</body>
 </html>
